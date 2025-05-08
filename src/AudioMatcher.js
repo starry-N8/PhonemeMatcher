@@ -1,9 +1,11 @@
+// src/components/AudioMatcher.js
 import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Mic, StopCircle } from 'lucide-react';
 import './AudioMatcher.css';
 
 const WS_URL = 'ws://20.204.169.24:8000/ws/phoneme-match';
+// const WS_URL = 'ws://localhost:8000/ws/phoneme-match';
 const TARGET_RATE = 16000;
 const CHUNK_DURATION_MS = 200; // ms
 
@@ -31,6 +33,7 @@ export default function AudioMatcher({ expectedPhonemes }) {
   const processorRef = useRef(null);
   const sourceRef = useRef(null);
   const bufferRef = useRef([]);
+  const lastSendTimeRef = useRef(null);
 
   const start = async () => {
     const ws = new WebSocket(WS_URL);
@@ -41,13 +44,14 @@ export default function AudioMatcher({ expectedPhonemes }) {
     };
     ws.onmessage = evt => {
       const data = JSON.parse(evt.data);
-      // Only add a segment if inference returned an accuracy or predicted phonemes
       const hasResult = Array.isArray(data.matches) && data.matches.length > 0;
       if (hasResult) {
+        const latency = lastSendTimeRef.current ? Date.now() - lastSendTimeRef.current : null;
         const newSeg = {
           predicted: (data.predicted_phonemes || []).join(' '),
           accuracy: data.weighted_accuracy,
-          matches: data.matches || []
+          matches: data.matches || [],
+          latency
         };
         setSegments(prev => [newSeg, ...prev]);
       }
@@ -80,6 +84,7 @@ export default function AudioMatcher({ expectedPhonemes }) {
           if (copyLen < piece.length) bufferRef.current.unshift(piece.subarray(copyLen));
         }
         const resampled = resampleBuffer(chunk, audioCtx.sampleRate, TARGET_RATE);
+        lastSendTimeRef.current = Date.now();
         ws.send(resampled.buffer);
       }
     };
@@ -113,6 +118,9 @@ export default function AudioMatcher({ expectedPhonemes }) {
             <div className="seg-header">
               <span>Segment {segments.length - idx}</span>
               <span className="accuracy">{seg.accuracy != null ? seg.accuracy.toFixed(2) : '--'}</span>
+              {seg.latency != null && (
+                <span className="latency">{seg.latency} ms</span>
+              )}
             </div>
             <div className="seg-body">
               <div className="predicted">Predicted: {seg.predicted}</div>
