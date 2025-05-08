@@ -1,0 +1,72 @@
+.audio-matcher {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.start-btn, .stop-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.start-btn { background-color: #16a34a; }
+.stop-btn { background-color: #dc2626; }
+.start-btn:disabled, .stop-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.status {
+  text-align: center;
+  font-weight: bold;
+  color: #047857;
+}
+
+.segments {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.segment-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.seg-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #333;
+}
+
+.seg-body {
+  font-size: 0.9em;
+  color: #444;
+}
+
+.predicted {
+  margin-bottom: 6px;
+}
+
+.matches ul {
+  margin: 4px 0 0 16px;
+}

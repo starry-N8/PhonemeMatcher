@@ -1,25 +1,24 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import AudioMatcher from './AudioMatcher';
 import './App.css';
 
-function App() {
+export default function App() {
+  const [expected, setExpected] = useState('b ə n æ n ə');
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app-container">
+      <div className="card">
+        <h1>Phoneme Matcher</h1>
+        <div className="input-group">
+          <label>Expected Phonemes</label>
+          <input
+            type="text"
+            value={expected}
+            onChange={e => setExpected(e.target.value)}
+          />
+        </div>
+        <AudioMatcher expectedPhonemes={expected.split(' ')} />
+      </div>
     </div>
   );
 }
-
-export default App;
