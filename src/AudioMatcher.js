@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Mic, StopCircle } from 'lucide-react';
 import './AudioMatcher.css';
 
-const WS_URL = 'wss://20.204.169.24:8000/ws/phoneme-match';
+const WS_URL = 'ws://20.204.169.24:8000/ws/phoneme-match';
 // const WS_URL = 'ws://localhost:8000/ws/phoneme-match';
 const TARGET_RATE = 16000;
 const CHUNK_DURATION_MS = 1000; // ms
