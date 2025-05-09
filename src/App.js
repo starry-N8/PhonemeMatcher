@@ -10,7 +10,7 @@ export default function App() {
       <div className="card">
         <h1>Phoneme Matcher</h1>
         <div className="input-group">
-          <label>Expected Phonemes</label>
+          <label>Expected Phonemes (space seperated)</label>
           <input
             type="text"
             value={expected}
